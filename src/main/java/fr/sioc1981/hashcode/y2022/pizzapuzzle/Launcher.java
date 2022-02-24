@@ -36,7 +36,7 @@ public class Launcher {
 				System.out.println("Filename: " + fileName);
 				loadInput(new File("in", fileName+".in.txt"));
 				process();
-//				writeOutput(fileName);
+				writeOutput(fileName);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -61,7 +61,7 @@ public class Launcher {
 					Skill skill = new Skill();
 					skill.name = scanner.next(); 
 					skill.level = scanner.nextInt();
-					contributor.skills.add(skill);
+					contributor.skills.put(skill.name, skill);
 					scanner.nextLine();
 				}
 //				CONTRIBUTORS.add(contributor);
@@ -93,13 +93,20 @@ public class Launcher {
 
 	}
 
-	private static void writeOutput(HashSet<String> ingredientsList, String fileName) throws Exception {
-		System.out.println(ingredientsList.size());
+	private static void writeOutput(String fileName) throws Exception {
+		System.out.println(AVAILABLE_PROJECTS);
 		FileWriter fwriter = new FileWriter(new File("out", fileName + ".out.txt"));
 		try (BufferedWriter bwriter = new BufferedWriter(fwriter)) {
-			bwriter.write(Integer.toString(ingredientsList.size()));
-			bwriter.write(' ');
-			bwriter.write(ingredientsList.stream().collect(Collectors.joining(" ")));
+			bwriter.write(Integer.toString(AVAILABLE_PROJECTS.size()));
+			bwriter.write('\n');
+			for (Project project : AVAILABLE_PROJECTS) {
+				bwriter.write(project.name);
+				bwriter.write(' ');
+				bwriter.write(project.contributors.size());
+				bwriter.write('\n');
+				bwriter.write(project.contributors.stream().map(c -> c.name).collect(Collectors.joining(" ")));
+				bwriter.write('\n');
+			}
 		}
 	}
 	
