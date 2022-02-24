@@ -9,7 +9,7 @@ public class Processor {
 		currentDay = 0;
 		int maxDays = 0;
 		
-		// TODO calculer maxDays
+		//calculer maxDays
 		for(Project project : Launcher.AVAILABLE_PROJECTS) {
 			int maxDaysForProject = project.bestBefore + project.score;
 			if(maxDaysForProject > maxDays) {
@@ -23,10 +23,21 @@ public class Processor {
 
 		while (currentDay < maxDays) {
 			
+			//DAY START
 			for(Project project : Launcher.PROJECTS_RELEASED) {
 				if(project.endDay == currentDay) {
 					//release all contributors
-					project.contributors.forEach(c -> c.available = true);
+					
+					for(int i = 0; i < project.contributors.size(); i++) {
+						Contributor con = project.contributors.get(i);
+						Skill skillUsed = project.skills.get(i);
+						
+						if(con.skills.get(skillUsed.name).level <= skillUsed.level) {
+							//LEVEL UP !
+							con.skills.get(skillUsed.name).level++;
+						}
+					}
+					
 				}
 			}
 			
