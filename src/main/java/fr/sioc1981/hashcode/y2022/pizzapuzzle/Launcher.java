@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 public class Launcher {
 	
 	
-	private static List<Contributor> CONTRIBUTORS;
+	public static List<Contributor> CONTRIBUTORS;
 	
-	private static List<Project> AVAILABLE_PROJECTS;
+	public static List<Project> AVAILABLE_PROJECTS;
 	
-	private static List<Project> PROJECTS_RELEASED;
+	public static List<Project> PROJECTS_RELEASED;
 	
 	public static void main(String[] args) throws Exception {
 		
