@@ -4,27 +4,27 @@ import java.util.Optional;
 
 public class Processor {
 
-	static int currentDay = 0;
+	static long currentDay = 0;
 
 	public static void process() {
 
 		currentDay = 0;
-		int maxDays = 0;
+		long maxDays = 0;
 
-		// calculer maxDays
-		for (Project project : Launcher.AVAILABLE_PROJECTS) {
-			int maxDaysForProject = project.bestBefore + project.score;
-			if (maxDaysForProject > maxDays) {
-				maxDays = maxDaysForProject;
-			}
-		}
+//		// calculer maxDays
+//		for (Project project : Launcher.AVAILABLE_PROJECTS) {
+//			int maxDaysForProject = project.bestBefore + project.score;
+//			if (maxDaysForProject > maxDays) {
+//				maxDays = maxDaysForProject;
+//			}
+//		}
+//
+//		System.out.println("maxDays = " + maxDays);
 
-		System.out.println("maxDays = " + maxDays);
-
-		maxDays = 100;
+		maxDays = 1000;
+		
 
 		while (currentDay < maxDays) {
-
 			// DAY START
 			for (Project project : Launcher.PROJECTS_RELEASED) {
 				if (project.endDay == currentDay) {
@@ -89,7 +89,7 @@ public class Processor {
 				if (ready) {
 					project.contributors.forEach(c -> c.available = false);
 					Launcher.PROJECTS_RELEASED.add(project);
-					project.endDay = currentDay + project.duration;
+					project.endDay = (int) (currentDay + project.duration);
 					// launcher.AVAILABLE_PROJECTS.remove(project)
 				} else {
 					project.contributors.forEach(c -> c.available = false);
@@ -101,8 +101,9 @@ public class Processor {
 			
 
 			Launcher.AVAILABLE_PROJECTS.removeAll(Launcher.PROJECTS_RELEASED);
-
-			currentDay++;
+			
+			currentDay = Launcher.PROJECTS_RELEASED.stream().filter(project -> project.endDay > currentDay).mapToInt(project -> project.endDay).asLongStream().min().orElse(maxDays); 
+//			currentDay++;
 
 		}
 
