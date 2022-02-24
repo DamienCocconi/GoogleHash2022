@@ -4,20 +4,20 @@ public class Processor {
 	
 	static int currentDay = 0;
 	
-	public static void process(Launcher launcher) {
+	public static void process() {
 		
 			
 			//parcourir les projets dispo
-			for(int i = 0; i < launcher.AVAILABLE_PROJECTS.size(); i++) {
-				Project project = launcher.AVAILABLE_PROJECTS.get(i);
+			for(int i = 0; i < Launcher.AVAILABLE_PROJECTS.size(); i++) {
+				Project project = Launcher.AVAILABLE_PROJECTS.get(i);
 				boolean ready = true;
 				
-				//trouver des contributeurs disponibles qui correspondent aux skills demandés
+				//trouver des contributeurs disponibles qui correspondent aux skills demandï¿½s
 				for(Skill requiredSkill : project.skills) {
 					Contributor contrib = null;
 					
-					for(Contributor contributor : launcher.CONTRIBUTORS) {
-						if(!contributor.available)
+					for(Contributor contributor : Launcher.CONTRIBUTORS) {
+						if(!contributor.available || project.contributors.contains(contributor))
 							continue;
 						
 						Skill contributorSkill = contributor.skills.get(requiredSkill.name);
@@ -30,6 +30,7 @@ public class Processor {
 					}
 					if(contrib != null) {
 						project.contributors.add(contrib);
+						ready = true;
 					}else {
 						ready = false;
 						project.contributors.clear();
@@ -37,16 +38,17 @@ public class Processor {
 					}
 				}
 				
-				if(ready) {
+				if (ready) {
 					project.contributors.forEach(c -> c.available = false);
-					launcher.PROJECTS_RELEASED.add(project);
+					Launcher.PROJECTS_RELEASED.add(project);
 					//launcher.AVAILABLE_PROJECTS.remove(project)
 				}else {
+					project.contributors.forEach(c -> c.available = false);
 					//nothing to do for now
 				}
 			}
 			
-			launcher.AVAILABLE_PROJECTS.removeAll(launcher.PROJECTS_RELEASED);
+			Launcher.AVAILABLE_PROJECTS.removeAll(Launcher.PROJECTS_RELEASED);
 
 	}
 

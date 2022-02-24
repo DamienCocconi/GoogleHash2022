@@ -24,11 +24,11 @@ public class Launcher {
 		
 		ArrayList<String> filenames = new ArrayList<>();
 		filenames.add("a_an_example");
-//		filenames.add("b_better_start_small");
-//		filenames.add("c_collaboration");
-//		filenames.add("d_dense_schedule");
-//		filenames.add("e_exceptional_skills");
-//		filenames.add("f_find_great_mentors");
+		filenames.add("b_better_start_small");
+		filenames.add("c_collaboration");
+		filenames.add("d_dense_schedule");
+		filenames.add("e_exceptional_skills");
+		filenames.add("f_find_great_mentors");
 		
 		
 		filenames.forEach(fileName -> {
@@ -64,9 +64,9 @@ public class Launcher {
 					contributor.skills.put(skill.name, skill);
 					scanner.nextLine();
 				}
-//				CONTRIBUTORS.add(contributor);
+				CONTRIBUTORS.add(contributor);
 			}
-			System.out.println(CONTRIBUTORS);
+//			System.out.println(CONTRIBUTORS);
 
 			for (int i = 0; i < maxProject; i++) {
 				Project project = new Project();
@@ -90,22 +90,21 @@ public class Launcher {
 	}
 	
 	private static void process() throws Exception {
-
+		Processor.process();
 	}
 
 	private static void writeOutput(String fileName) throws Exception {
-		System.out.println(AVAILABLE_PROJECTS);
+		System.out.println(PROJECTS_RELEASED);
 		FileWriter fwriter = new FileWriter(new File("out", fileName + ".out.txt"));
 		try (BufferedWriter bwriter = new BufferedWriter(fwriter)) {
-			bwriter.write(Integer.toString(AVAILABLE_PROJECTS.size()));
-			bwriter.write('\n');
-			for (Project project : AVAILABLE_PROJECTS) {
+			bwriter.write(Integer.toString(PROJECTS_RELEASED.size()));
+			for (Project project : PROJECTS_RELEASED) {
+				bwriter.write('\n');
 				bwriter.write(project.name);
 				bwriter.write(' ');
-				bwriter.write(project.contributors.size());
+				bwriter.write(""+project.contributors.size());
 				bwriter.write('\n');
 				bwriter.write(project.contributors.stream().map(c -> c.name).collect(Collectors.joining(" ")));
-				bwriter.write('\n');
 			}
 		}
 	}
