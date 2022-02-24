@@ -6,8 +6,20 @@ public class Processor {
 
 	public static void process() {
 
+		currentDay = 0;
+		int maxDays = 0;
+		
 		// TODO calculer maxDays
-		int maxDays = 100;
+		for(Project project : Launcher.AVAILABLE_PROJECTS) {
+			int maxDaysForProject = project.bestBefore + project.score;
+			if(maxDaysForProject > maxDays) {
+				maxDays = maxDaysForProject;
+			}
+		}
+		
+		System.out.println("maxDays = " + maxDays);
+		
+		//maxDays = 100;
 
 		while (currentDay < maxDays) {
 			
