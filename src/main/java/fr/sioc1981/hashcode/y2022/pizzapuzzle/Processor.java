@@ -1,5 +1,7 @@
 package fr.sioc1981.hashcode.y2022.pizzapuzzle;
 
+import java.util.Optional;
+
 public class Processor {
 
 	static int currentDay = 0;
@@ -8,42 +10,40 @@ public class Processor {
 
 		currentDay = 0;
 		int maxDays = 0;
-		
-		//calculer maxDays
-		for(Project project : Launcher.AVAILABLE_PROJECTS) {
+
+		// calculer maxDays
+		for (Project project : Launcher.AVAILABLE_PROJECTS) {
 			int maxDaysForProject = project.bestBefore + project.score;
-			if(maxDaysForProject > maxDays) {
+			if (maxDaysForProject > maxDays) {
 				maxDays = maxDaysForProject;
 			}
 		}
-		
+
 		System.out.println("maxDays = " + maxDays);
-		
-		//maxDays = 100;
+
+		maxDays = 100;
 
 		while (currentDay < maxDays) {
-			
-			//DAY START
-			for(Project project : Launcher.PROJECTS_RELEASED) {
-				if(project.endDay == currentDay) {
-					//release all contributors
-					
-					for(int i = 0; i < project.contributors.size(); i++) {
+
+			// DAY START
+			for (Project project : Launcher.PROJECTS_RELEASED) {
+				if (project.endDay == currentDay) {
+					// release all contributors
+
+					for (int i = 0; i < project.contributors.size(); i++) {
 						Contributor con = project.contributors.get(i);
 						Skill skillUsed = project.skills.get(i);
-						
-						if(con.skills.get(skillUsed.name).level <= skillUsed.level) {
-							//LEVEL UP !
+
+						if (con.skills.get(skillUsed.name).level <= skillUsed.level) {
+							// LEVEL UP !
 							con.skills.get(skillUsed.name).level++;
 						}
-						
+
 						con.available = true;
 					}
-					
+
 				}
 			}
-			
-			
 
 			// parcourir les projets dispo
 			for (int i = 0; i < Launcher.AVAILABLE_PROJECTS.size(); i++) {
@@ -63,8 +63,19 @@ public class Processor {
 							// attribuer le contributeur
 							contrib = contributor;
 							break;
-						}
+						} else if (contributorSkill != null && contributorSkill.level + 1 == requiredSkill.level
+								&& project.contributors.stream().filter(c -> {
+									Skill skill = c.skills.get(requiredSkill.name);
+									if (skill != null && skill.level >= requiredSkill.level) {
+										return true;
+									} else {
+										return false;
+									}
+								}).count() > 0) {
 
+							contrib = contributor;
+							break;
+						}
 					}
 					if (contrib != null) {
 						project.contributors.add(contrib);
@@ -88,7 +99,7 @@ public class Processor {
 			}
 
 			Launcher.AVAILABLE_PROJECTS.removeAll(Launcher.PROJECTS_RELEASED);
-			
+
 			currentDay++;
 
 		}

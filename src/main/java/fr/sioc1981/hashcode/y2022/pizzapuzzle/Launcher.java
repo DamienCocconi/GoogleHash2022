@@ -94,7 +94,7 @@ public class Launcher {
 	}
 
 	private static void writeOutput(String fileName) throws Exception {
-		System.out.println(PROJECTS_RELEASED);
+//		System.out.println(PROJECTS_RELEASED);
 		FileWriter fwriter = new FileWriter(new File("out", fileName + ".out.txt"));
 		try (BufferedWriter bwriter = new BufferedWriter(fwriter)) {
 			bwriter.write(Integer.toString(PROJECTS_RELEASED.size()));
