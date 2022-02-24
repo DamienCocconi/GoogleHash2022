@@ -1,4 +1,4 @@
-package data;
+package main.java.fr.sioc1981.hashcode.y2022.pizzapuzzle;
 
 import java.util.ArrayList;
 
