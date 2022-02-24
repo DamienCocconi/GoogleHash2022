@@ -36,6 +36,8 @@ public class Processor {
 							//LEVEL UP !
 							con.skills.get(skillUsed.name).level++;
 						}
+						
+						con.available = true;
 					}
 					
 				}
