@@ -5,45 +5,38 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 
 public class Launcher {
 	
-	public static class Contributors {
-		private HashMap<String, > likes;
-		private HashMap<String> dislikes;
-	}
 	
-	public static class Result {
-		int score;
-		HashSet<String> ingredientsList;
-	}
+	private static List<Contributor> CONTRIBUTORS;
 	
-	private static ArrayList<Client> clientList;
+	private static List<Project> AVAILABLE_PROJECTS;
 	
-	private static HashSet<String> ingredientsList;
+	private static List<Project> PROJECTS_RELEASED;
 	
 	public static void main(String[] args) throws Exception {
 		
 		ArrayList<String> filenames = new ArrayList<>();
 		filenames.add("a_an_example");
-		filenames.add("b_better_start_small");
-		filenames.add("c_collaboration");
-		filenames.add("d_dense_schedule");
-		filenames.add("e_exceptional_skills");
-		filenames.add("f_find_great_mentors");
+//		filenames.add("b_better_start_small");
+//		filenames.add("c_collaboration");
+//		filenames.add("d_dense_schedule");
+//		filenames.add("e_exceptional_skills");
+//		filenames.add("f_find_great_mentors");
 		
 		
 		filenames.forEach(fileName -> {
 			try {
 				System.out.println("Filename: " + fileName);
 				loadInput(new File("in", fileName+".in.txt"));
-				process(clientList);
-				writeOutput(ingredientsList, fileName);
+				process();
+//				writeOutput(fileName);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -51,34 +44,53 @@ public class Launcher {
 	}
 	
 	private static void loadInput(File file) throws FileNotFoundException {
+		CONTRIBUTORS = new ArrayList<>();
+		AVAILABLE_PROJECTS = new ArrayList<>();
+		PROJECTS_RELEASED = new ArrayList<>();
 		try (final Scanner scanner = new Scanner(file)) {
-			int maxClient = scanner.nextInt();
-			clientList = new ArrayList<>(maxClient);
-			Client client = null;
-			String line;
-			Pattern pattern = Pattern.compile("\\s* \\s*");
-			while (scanner.hasNext()) {
-//				System.out.println(scanner.nextInt());
-				scanner.nextInt();
-				line = scanner.nextLine();
-				if (client == null ) {
-					client = new Client();
-					client.likes = pattern.splitAsStream(line.trim()).collect(Collectors.toCollection(HashSet::new));
-//					System.out.println(client.likes);
-				} else {
-					client.dislikes = pattern.splitAsStream(line.trim()).collect(Collectors.toCollection(HashSet::new));
-					clientList.add(client);
-					client = null;
+			int maxContrib = scanner.nextInt();
+			int maxProject = scanner.nextInt();
+			scanner.nextLine();
+			
+			for (int i = 0; i < maxContrib; i++) {
+				Contributor contributor = new Contributor();
+				contributor.name = scanner.next(); 
+				int nbSkill = scanner.nextInt();
+				scanner.nextLine();
+				for (int j = 0; j < nbSkill; j++) {
+					Skill skill = new Skill();
+					skill.name = scanner.next(); 
+					skill.level = scanner.nextInt();
+					contributor.skills.add(skill);
+					scanner.nextLine();
 				}
+//				CONTRIBUTORS.add(contributor);
 			}
+			System.out.println(CONTRIBUTORS);
+
+			for (int i = 0; i < maxProject; i++) {
+				Project project = new Project();
+				project.name = scanner.next(); 
+				project.duration = scanner.nextInt();
+				project.maxScore = scanner.nextInt();
+				project.bestBefore = scanner.nextInt();
+				int nbRoles = scanner.nextInt();
+				scanner.nextLine();
+				for (int j = 0; j < nbRoles; j++) {
+					Skill skill = new Skill();
+					skill.name = scanner.next(); 
+					skill.level = scanner.nextInt();
+					project.skills.add(skill);
+					scanner.nextLine();
+				}
+				AVAILABLE_PROJECTS.add(project);
+			}
+//			System.out.println(AVAILABLE_PROJECTS);
 		}
 	}
 	
-	private static HashSet<String> process(ArrayList<Client> clientList) throws Exception {
-		ingredientsList = new HashSet();
-		clientList.forEach(client -> ingredientsList.addAll(client.likes));
+	private static void process() throws Exception {
 
-		return ingredientsList;
 	}
 
 	private static void writeOutput(HashSet<String> ingredientsList, String fileName) throws Exception {
