@@ -12,4 +12,36 @@ public class Project {
 	
 	ArrayList<Skill> skills;
 
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public int getBestBefore() {
+		return bestBefore;
+	}
+
+	public void setBestBefore(int bestBefore) {
+		this.bestBefore = bestBefore;
+	}
+
+	public ArrayList<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(ArrayList<Skill> skills) {
+		this.skills = skills;
+	}
+
 }
