@@ -101,8 +101,6 @@ public class Launcher {
 			for (Project project : PROJECTS_RELEASED) {
 				bwriter.write('\n');
 				bwriter.write(project.name);
-				bwriter.write(' ');
-				bwriter.write(""+project.contributors.size());
 				bwriter.write('\n');
 				bwriter.write(project.contributors.stream().map(c -> c.name).collect(Collectors.joining(" ")));
 			}
