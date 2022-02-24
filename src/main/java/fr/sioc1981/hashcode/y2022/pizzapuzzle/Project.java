@@ -16,13 +16,14 @@ public class Project {
 	int bestBefore;
 	
 	ArrayList<Skill> skills = new ArrayList<>();
+	
+	ArrayList<Contributor> contributors = new ArrayList<>();
 
 	@Override
 	public String toString() {
 		return "Project [name=" + name + ", maxScore=" + maxScore + ", score=" + score + ", duration=" + duration
-				+ ", bestBefore=" + bestBefore + ", skills=" + skills + "]";
+				+ ", bestBefore=" + bestBefore + ", skills=" + skills + ", contributors=" + contributors + "]";
 	}
-	
-	
+
 
 }
