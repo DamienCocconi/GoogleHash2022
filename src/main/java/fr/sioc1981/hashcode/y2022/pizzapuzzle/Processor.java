@@ -44,10 +44,9 @@ public class Processor {
 
 				}
 			}
-
-			// parcourir les projets dispo
-			for (int i = 0; i < Launcher.AVAILABLE_PROJECTS.size(); i++) {
-				Project project = Launcher.AVAILABLE_PROJECTS.get(i);
+			
+			Launcher.AVAILABLE_PROJECTS.stream().sorted((a,b) -> a.score - b.score ).forEach( project -> {
+				
 				boolean ready = true;
 
 				// trouver des contributeurs disponibles qui correspondent aux skills demand�s
@@ -96,7 +95,10 @@ public class Processor {
 					project.contributors.forEach(c -> c.available = false);
 					// nothing to do for now
 				}
-			}
+				
+			});
+
+			
 
 			Launcher.AVAILABLE_PROJECTS.removeAll(Launcher.PROJECTS_RELEASED);
 
