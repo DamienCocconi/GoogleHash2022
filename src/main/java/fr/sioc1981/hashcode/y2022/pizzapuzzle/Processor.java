@@ -1,5 +1,6 @@
 package fr.sioc1981.hashcode.y2022.pizzapuzzle;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class Processor {
@@ -21,10 +22,12 @@ public class Processor {
 //
 //		System.out.println("maxDays = " + maxDays);
 
-		maxDays = 1000;
+		maxDays = 25000;
 		
+		ArrayList<Project> projectToRemove = new ArrayList<Project>();
 
 		while (currentDay < maxDays) {
+			projectToRemove.clear();
 			// DAY START
 			for (Project project : Launcher.PROJECTS_RELEASED) {
 				if (project.endDay == currentDay) {
@@ -45,9 +48,13 @@ public class Processor {
 				}
 			}
 			
-			Launcher.AVAILABLE_PROJECTS.stream().sorted((a,b) -> a.score - b.score ).forEach( project -> {
-				
+			for (Project project : Launcher.AVAILABLE_PROJECTS) {
 				boolean ready = true;
+				
+				if (project.bestBefore + project.maxScore <= currentDay + project.duration ) {
+					projectToRemove.add(project);
+					continue;
+				}
 
 				// trouver des contributeurs disponibles qui correspondent aux skills demand�s
 				for (Skill requiredSkill : project.skills) {
@@ -89,6 +96,7 @@ public class Processor {
 				if (ready) {
 					project.contributors.forEach(c -> c.available = false);
 					Launcher.PROJECTS_RELEASED.add(project);
+					projectToRemove.add(project);
 					project.endDay = (int) (currentDay + project.duration);
 					// launcher.AVAILABLE_PROJECTS.remove(project)
 				} else {
@@ -96,11 +104,11 @@ public class Processor {
 					// nothing to do for now
 				}
 				
-			});
+			}
 
 			
 
-			Launcher.AVAILABLE_PROJECTS.removeAll(Launcher.PROJECTS_RELEASED);
+			Launcher.AVAILABLE_PROJECTS.removeAll(projectToRemove);
 			
 			currentDay = Launcher.PROJECTS_RELEASED.stream().filter(project -> project.endDay > currentDay).mapToInt(project -> project.endDay).asLongStream().min().orElse(maxDays); 
 //			currentDay++;
