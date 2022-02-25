@@ -22,7 +22,7 @@ public class Processor {
 //
 //		System.out.println("maxDays = " + maxDays);
 
-		maxDays = 25000;
+		maxDays = Integer.MAX_VALUE;
 		
 		ArrayList<Project> projectToRemove = new ArrayList<Project>();
 
